@@ -6,6 +6,12 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     box-sizing: border-box;
   }
+
+  :root {
+    --sec-bg-color: #252525;
+    --bg-color: #1a1a1b;
+    --txt-color: #EEEEEE;
+  }
   
   body{
     overscroll-behavior-y: none;
@@ -17,8 +23,7 @@ const GlobalStyles = createGlobalStyle`
   html{
     font-family: 'MM';
     font-size: 1rem;
-    background-color: var(--grey-0);
-    color: var(--grey-900);
+    background-color: var(--bg-color);
     height: 100%;
     cursor: context-menu;
   }

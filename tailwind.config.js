@@ -2,20 +2,20 @@ module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    sm: "440px",
-    // => @media (min-width: 440px) { ... }
+    screens: {
+      sm: "480px",
+      md: "547px",
+      lg: "768px",
+      xl: "1024px",
+      xxl: "1280px",
+    },
 
-    md: "547px",
-    // => @media (min-width: 547px) { ... }
+    colors: {
+      darkGrey: "#1a1a1b",
+      lightGrey: "#252525",
+      white: "#EEEEEE",
+    },
 
-    lg: "768px",
-    // => @media (min-width: 768px) { ... }
-
-    xl: "1024px",
-    // => @media (min-width: 1024px) { ... }
-
-    xxl: "1280px",
-    // => @media (min-width: 1280px) { ... }
     extend: {},
   },
   variants: {

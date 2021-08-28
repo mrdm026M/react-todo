@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
-import "./Todo.scss";
 
 export const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState("");
   const [editTodos, setEditTodos] = useState(null);
   const [editContent, setEditContent] = useState("");
-  //   const [donetodos, setDoneTodos] = useState([]);
 
   // getting todos from localStorage
   useEffect(() => {
@@ -35,8 +33,12 @@ export const Todo = () => {
       done: false,
     };
 
-    setTodos([...todos].concat(newTodo));
-    setTodo("");
+    if (newTodo.content === "") {
+      alert("Please enter some task");
+    } else {
+      setTodos([...todos].concat(newTodo));
+      setTodo("");
+    }
   }
 
   // delete todos function
@@ -57,12 +59,6 @@ export const Todo = () => {
     setTodos(updatedTodos);
   }
 
-  // setDoneTodos([...donetodos].concat(updatedTodos));
-
-  // const completedTodos = [...todos].filter((todo) => todo.done === true);
-
-  // setTodos(completedTodos);
-
   // edit todos function
   function editTodo(id) {
     const updatedTodos = [...todos].map((todo) => {
@@ -78,60 +74,83 @@ export const Todo = () => {
   }
 
   return (
-    <main className="border-2 border-blue-600 todo__section">
-      <div className="todo">
-        <form className="todo__form" onSubmit={submitTodo}>
+    <main className="h-full todo__section">
+      <div className="h-full p-4 text-center md:p-8 todo">
+        <form
+          className="flex flex-col items-center justify-center gap-4 p-4 todo__form xl:flex-row md:flex-row"
+          onSubmit={submitTodo}
+        >
           <input
             type="text"
             name="input__todo"
             id="input__todo"
+            className="w-full px-2 py-1 text-xl border-b-2 border-white outline-none bg-darkGrey md:w-96"
             onChange={(e) => setTodo(e.target.value)}
             value={todo}
+            autoComplete="off"
           />
-          <button type="submit" className="submit__btn">
+          <button
+            type="submit"
+            className="px-6 py-1 text-base bg-white border-2 border-white md:py-2 md:text-xl md:px-7 text-darkGrey submit__btn"
+          >
             Add
           </button>
         </form>
 
-        <section className="todos__section">
+        <section className="flex flex-col items-center justify-center gap-2 p-3 md:gap-4 md:p-6 todos__section">
           {todos.map((task) => (
-            <div className="task" key={task.id}>
+            <div
+              className="flex items-center justify-center w-full gap-1 px-4 py-2 border-2 border-white md:gap-2 md:px-8 md:py-4 xl:w-1/2 task"
+              key={task.id}
+            >
+              <div className="flex items-center w-full px-0 py-1 md:py-2 content">
+                {editTodos === task.id ? (
+                  <input
+                    type="text"
+                    name="edit__todo"
+                    id="edit__todo"
+                    className="w-full px-1 py-1 text-sm border-b-2 border-white outline-none md:px-2 md:text-base bg-darkGrey"
+                    onChange={(e) => setEditContent(e.target.value)}
+                    value={editContent}
+                    autoComplete="off"
+                  />
+                ) : (
+                  <div className="flex items-center gap-2 md:gap-4 main">
+                    <input
+                      type="checkbox"
+                      name="done__todo"
+                      id="done__todo"
+                      onChange={() => doneTodo(task.id)}
+                      checked={task.done}
+                    />
+                    <p className="text-base md:text-xl">{task.content}</p>
+                  </div>
+                )}
+              </div>
+              <button
+                className="px-4 py-2 ml-2 text-sm md:py-3 md:ml-4 md:text-base md:px-7 bg-lightGrey"
+                onClick={() => deleteTodo(task.id)}
+              >
+                Delete
+              </button>
               {editTodos === task.id ? (
-                <input
-                  type="text"
-                  name="edit__todo"
-                  id="edit__todo"
-                  onChange={(e) => setEditContent(e.target.value)}
-                  value={editContent}
-                />
+                <button
+                  className="px-4 py-2 ml-2 text-sm md:py-3 md:ml-4 md:text-base md:px-7 bg-lightGrey"
+                  onClick={() => editTodo(task.id)}
+                >
+                  Submit
+                </button>
               ) : (
-                <p>{task.content}</p>
-              )}
-
-              <button onClick={() => deleteTodo(task.id)}>Delete</button>
-              <input
-                type="checkbox"
-                name="done__todo"
-                id="done__todo"
-                onChange={() => doneTodo(task.id)}
-                checked={task.done}
-              />
-              {editTodos === task.id ? (
-                <button onClick={() => editTodo(task.id)}>Submit</button>
-              ) : (
-                <button onClick={() => setEditTodos(task.id)}>Edit</button>
+                <button
+                  className="px-4 py-2 ml-2 text-sm md:py-3 md:ml-4 md:text-base md:px-7 bg-lightGrey"
+                  onClick={() => setEditTodos(task.id)}
+                >
+                  Edit
+                </button>
               )}
             </div>
           ))}
         </section>
-
-        {/* <section className="done__todos__section">
-          {donetodos.map((doneTask) => (
-            <div className="done__task" key={doneTask.id}>
-              <p>{doneTask.content}</p>
-            </div>
-          ))}
-        </section> */}
       </div>
     </main>
   );
